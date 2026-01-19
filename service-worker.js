@@ -1,9 +1,9 @@
 
-const CACHE_NAME = 'weekly-gate-pwa-v3-1-1a';
+const CACHE_NAME = 'weekly-gate-pwa-v3-2-0';
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll([
-      './', './index.html', './app.js', './manifest.json', './icons/icon-192x192.png', './icons/icon-512x512.png'
+      './', './index.html', './app.js?v=320', './manifest.json', './icons/icon-192x192.png', './icons/icon-512x512.png'
     ]))
   );
 });
