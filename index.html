@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Solo Leveling — Weekly Gate (v3.1.1)</title>
+  <title>Solo Leveling — Weekly Gate (v3.1.1a)</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192x192.png">
   <meta name="theme-color" content="#0f1222" />
@@ -24,31 +24,56 @@
     .row>*{flex:1 1 160px}
     .btn{background:var(--accent);color:#041021;border:none;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer}
     .btn.secondary{background:#2a2f57;color:var(--text)}
+    .btn.danger{background:#ff6a6a;color:white}
+    .btn.ghost{background:transparent;border:1px solid #2a2f57;color:#a9b0d6}
     .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid #2a2f57;color:var(--muted)}
     ul.clean{list-style:none;padding-left:0;margin:0}
     ul.clean li{display:flex;align-items:center;gap:8px;margin:6px 0;padding:8px;border:1px solid #2a2f57;border-radius:10px;background:#121633}
+    ul.clean li.ok{border-color:#23563d;background:#14262a}
+    ul.clean li.fail{border-color:#3a2630;background:#1c1420}
     .dot{width:10px;height:10px;border-radius:999px;background:#555;display:inline-block}
+    .ok .dot{background:#31d0a0}
+    .fail .dot{background:#e15c5c}
     .subbadges{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
     .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid #2a2f57;color:#a9b0d6}
+    .badge.ok{border-color:#2b6e3b;color:#7bffb8}
+    .badge.fail{border-color:#5a2a2a;color:#ff9aa8}
     table{width:100%;border-collapse:collapse;font-size:14px}
     th,td{padding:8px 10px;border-bottom:1px solid #2a2f57}
     th{color:var(--muted);font-weight:600;text-align:left}
     input,select,textarea{background:#0e1126;color:var(--text);border:1px solid #2a2f57;border-radius:8px;padding:8px 10px;font:inherit}
     .mini{font-size:12px;color:#a9b0d6}
-    .quote{background:linear-gradient(180deg,#121636,#10142a);border:1px solid #2a2f57}
+    .ex-row{display:flex;align-items:flex-start;gap:8px;margin:6px 0;padding:8px;background:#10142e;border:1px solid #2a2f57;border-radius:8px}
+    .ex-name{flex:2}
+    .ex-sets{display:flex;align-items:center;gap:6px}
+    .counter{background:#0e1126;border:1px solid #2a2f57;border-radius:8px;padding:4px 8px}
+    .setlist{flex:3}
+    .setlist table{width:100%;font-size:12px}
+    .hbar{height:10px;border-radius:8px;background:#0e1126;border:1px solid #2a2f57;overflow:hidden}
+    .hbar>span{display:block;height:100%;background:linear-gradient(90deg,#6aa9ff,#7bffb8);width:0%}
+    .cal-wrap{display:flex;align-items:center;justify-content:space-between;margin:6px 0 10px}
+    .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+    .cal .head{font-size:11px;color:#a9b0d6;text-align:center}
+    .day{border:1px solid #2a2f57;border-radius:8px;min-height:58px;padding:6px;background:#10142e;position:relative;cursor:pointer}
+    .day .d{font-size:12px;color:#a9b0d6}
+    .mark{position:absolute;right:6px;bottom:6px;border-radius:999px;padding:2px 6px;font-size:11px;border:1px solid #2a2f57}
+    .mark.good{background:#122a1f;color:#7bffb8;border-color:#2b6e3b}
+    .mark.bad{background:#2a121f;color:#ff9aa8;border-color:#5a2a2a}
+    .mark.none{background:#121633;color:#a9b0d6}
+    footer{color:var(--muted);font-size:12px;padding:24px;text-align:center}
+    .quote{background:linear-gradient(180deg,#121636,#10142a);border:1px solid #2a2f57;margin-bottom:16px}
     .quote blockquote{margin:0;text-align:center;white-space:pre-line;line-height:1.65}
-    .quote .zh{font-size:22px;letter-spacing:.05em;font-family: "Noto Sans JP", "Microsoft YaHei", "WenQuanYi Zen Hei", system-ui, sans-serif}
+    .quote .zh{font-size:22px;letter-spacing:.05em;font-family: "Noto Sans JP","Microsoft YaHei","WenQuanYi Zen Hei",system-ui,sans-serif}
     .quote .en{margin-top:8px;color:#cfd6ff;font-size:15px;font-style:italic}
   </style>
 </head>
 <body>
   <header>
     <h1>⚔️ Solo Leveling — Weekly Gate</h1>
-    <div class="sub">v3.1.1 • Motivation card added.</div>
+    <div class="sub">v3.1.1a • Motivation card + full layout.</div>
   </header>
 
   <div class="wrap">
-    <!-- Motivational quote (only the saying, no attribution) -->
     <div class="card quote">
       <blockquote>
         <div class="en">"I will continue fighting myself, as long as I have fangs in my heart."</div>
@@ -84,10 +109,146 @@
       </div>
     </div>
 
-    <!-- The rest of app content is loaded from app.js (same as v3.1 feature set) -->
-    <div id="appMount"></div>
+    <details open style="margin-top:16px">
+      <summary>💪 Strength Templates & Session Tracker</summary>
+      <div class="section">
+        <div class="row">
+          <select id="planSelect">
+            <option value="A">Plan A — Back/Shoulder & Abs</option>
+            <option value="B">Plan B — Chest/Calves & Shoulder + Abs</option>
+          </select>
+          <input type="date" id="sessDate">
+          <label class="pill"><input type="checkbox" id="perSetMode"> Per‑set mode</label>
+          <button class="btn" id="startSession">Start Session</button>
+          <button class="btn secondary" id="clearSession">Clear</button>
+        </div>
+        <div id="sessionBox" style="margin-top:12px;display:none">
+          <div class="mini" id="sessionIntro"></div>
+          <div id="exercises"></div>
+          <div class="row" style="margin-top:8px">
+            <textarea id="sessNotes" placeholder="Notes (warm-up, weights, how it felt)" rows="2"></textarea>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <button class="btn" id="saveSession">Save Session</button>
+          </div>
+        </div>
 
-    <footer style="margin-top:16px">
+        <h4 style="margin:16px 0 8px">Saved Strength Sessions</h4>
+        <table id="sessionTable">
+          <thead><tr><th>Date</th><th>Plan</th><th>Total Sets</th><th>Volume</th><th>Highlights</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details open>
+      <summary>🥗 Side Quest: <b>Clean Boy</b> (Daily)</summary>
+      <div class="section">
+        <div class="row">
+          <input type="date" id="qDate">
+          <label>Ate clean <input type="checkbox" id="qClean"></label>
+          <label>Water (L) <input type="number" id="qWater" min="0" step="0.1" placeholder="2.0"></label>
+          <div class="row" style="flex:1 1 100%">
+            <button class="btn ghost" id="qAdd250">+0.25 L</button>
+            <button class="btn ghost" id="qAdd500">+0.5 L</button>
+            <button class="btn" id="qSave">Save Day</button>
+          </div>
+        </div>
+        <div class="mini" id="qHint">Earn the title <b>“Clean Boy”</b> for a day when you ate clean and drank ≥ <span id="waterTargetHint">2.0</span> L.</div>
+        <div class="hbar"><span id="waterBar" style="width:0%"></span></div>
+        <div class="row" style="margin-top:8px">
+          <div class="pill">This month: <span id="qMonthCount">0</span> CB days</div>
+          <div class="pill">Current streak: <span id="qStreak">0</span> days</div>
+          <div class="pill">Best streak: <span id="qBest">0</span> days</div>
+        </div>
+      </div>
+      <div class="section" style="padding-top:0">
+        <div class="cal-wrap">
+          <button class="btn secondary" id="prevMonth">◀</button>
+          <div><b id="calTitle">Month YYYY</b></div>
+          <button class="btn secondary" id="nextMonth">▶</button>
+        </div>
+        <div class="cal" id="calHead"></div>
+        <div class="cal" id="calGrid"></div>
+        <div class="mini" style="margin-top:6px">Legend: <span class="badge ok">CB</span> = Clean Boy (clean & ≥ target) · <span class="badge fail">X</span> = logged but not clean · <span class="badge">—</span> = no entry</div>
+      </div>
+    </details>
+
+    <details>
+      <summary>🏋️ Workout Log (freeform)</summary>
+      <div class="section">
+        <div class="row">
+          <input type="date" id="wDate">
+          <input type="text" id="wType" placeholder="Type (e.g., Strength, Run, Walk)">
+          <input type="number" id="wDur" placeholder="Duration (min)" min="0">
+          <input type="number" id="wSets" placeholder="Sets/Reps total" min="0">
+          <select id="wIntens">
+            <option value="0">Intensity (1-5)</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+          </select>
+          <button class="btn" id="addWorkout">Add</button>
+        </div>
+        <table id="workoutTable" style="margin-top:12px">
+          <thead><tr><th>Date</th><th>Type</th><th>Minutes</th><th>Sets/Reps</th><th>Intensity</th><th>EXP</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>🧹 Chores & Reading Log</summary>
+      <div class="section">
+        <div class="row">
+          <input type="date" id="cDate">
+          <input type="text" id="cName" placeholder="Chore (e.g., Vacuum / Sweep / Dust / Bathroom / Reading)">
+          <input type="number" id="cPomo" placeholder="Pomodoros" min="0">
+          <input type="number" id="cMin" placeholder="Minutes" min="0">
+          <button class="btn" id="addChore">Add</button>
+        </div>
+        <table id="choreTable" style="margin-top:12px">
+          <thead><tr><th>Date</th><th>Chore</th><th>Pomodoros</th><th>Minutes</th><th>EXP</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>⚙️ Settings</summary>
+      <div class="section">
+        <h4 style="margin:4px 0">Base EXP (optional)</h4>
+        <div class="row">
+          <label>Base Workout EXP <input id="cfgBaseWorkout" type="number" value="50"></label>
+          <label>Base Chore EXP <input id="cfgBaseChore" type="number" value="20"></label>
+          <label>EXP per Workout Minute <input id="cfgPerMin" type="number" value="2"></label>
+        </div>
+        <h4 style="margin:12px 0 4px">Nutrition</h4>
+        <div class="row">
+          <label>Hydration target (L/day) <input id="cfgWaterTarget" type="number" step="0.1" value="2.0"></label>
+        </div>
+        <h4 style="margin:12px 0 4px">Keyword Detection</h4>
+        <p class="sub">Edit detection keywords. Separate multiple with commas.</p>
+        <div class="row">
+          <label>Strength keywords <input id="kwStrength" value="strength, weights, gym, lift, deadlift, squat, bench, press"></label>
+          <label>Cardio keywords <input id="kwCardio" value="run, cardio, bike, cycling, swim, row"></label>
+          <label>Walk keywords <input id="kwWalk" value="walk, walking"></label>
+        </div>
+        <div class="row">
+          <label>Vacuum keywords <input id="kwVac" value="vacuum, hoover"></label>
+          <label>Sweep keywords <input id="kwSweep" value="sweep, broom"></label>
+          <label>Dust keywords <input id="kwDust" value="dust, dusting"></label>
+          <label>Bathroom keywords <input id="kwBath" value="bathroom, toilet, wc"></label>
+          <label>Reading keywords <input id="kwRead" value="read, reading, book"></label>
+        </div>
+        <div class="row">
+          <button class="btn" id="saveCfg">Save Settings</button>
+          <button class="btn secondary" id="exportBtn">Export Save</button>
+          <label class="btn secondary" for="importFile" style="cursor:pointer">Import Save<input type="file" id="importFile" accept="application/json" style="display:none"></label>
+          <button class="btn danger" id="resetAll">Reset Everything</button>
+        </div>
+      </div>
+    </details>
+
+    <footer>
       +1 level only if all quests met Mon–Sun. Data is stored locally; sync is optional.
     </footer>
   </div>
