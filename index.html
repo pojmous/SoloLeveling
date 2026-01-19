@@ -4,88 +4,80 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Solo Leveling — Weekly Gate (v3.2.0)</title>
+  <title>Solo Leveling — Weekly Gate (v3.2.1)</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192x192.png">
   <meta name="theme-color" content="#0f1222" />
   <style>
-    :root{
-      --bg:#0f1222; --panel:#171a2e; --panel2:#1f2440; --text:#e8edff; --muted:#a9b0d6;
-      --accent:#6aa9ff; --accent2:#7bffb8; --danger:#ff6a6a; --border:#2a2f57;
-      --dim: 0.35;
-    }
+    :root{ --bg:#0f1222; --panel:#171a2e; --text:#e8edff; --muted:#a9b0d6; --accent:#6aa9ff; --accent2:#7bffb8; --danger:#ff6a6a; --border:#2a2f57; --dim: .35 }
     html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif}
     header{position:sticky;top:0;z-index:8;padding:16px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#121636,#0f1222)}
     h1{margin:0;font-size:22px;letter-spacing:.3px;color:var(--accent)}
     .sub{color:var(--muted);font-size:13px;margin-top:6px}
     .wrap{max-width:1100px;margin:0 auto;padding:16px}
     .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px}
+    .card{background:#171a2e;border:1px solid var(--border);border-radius:12px;padding:14px}
     .stat{display:flex;flex-direction:column;gap:6px}
     .label{font-size:12px;color:var(--muted)}
     .value{font-size:22px;font-weight:700}
     .row{display:flex;gap:10px;flex-wrap:wrap}
     .row>*{flex:1 1 160px}
-    .btn{background:var(--accent);color:#041021;border:none;border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;transition:transform .06s ease, filter .2s}
+    .btn{background:var(--accent);color:#041021;border:none;border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer}
     .btn.secondary{background:#2a2f57;color:var(--text)}
     .btn.ghost{background:transparent;border:1px solid var(--border);color:#a9b0d6}
     .btn.danger{background:var(--danger);color:white}
-    .btn:active{transform:scale(.98)}
     .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid var(--border);color:var(--muted)}
     .mini{font-size:12px;color:#a9b0d6}
     ul.clean{list-style:none;padding-left:0;margin:0}
     ul.clean li{display:flex;align-items:center;gap:8px;margin:6px 0;padding:8px;border:1px solid var(--border);border-radius:10px;background:#121633}
-    .dot{width:10px;height:10px;border-radius:999px;background:#31d0a0;display:inline-block}
 
     .quote{background:linear-gradient(180deg,#121636,#10142a);border:1px solid var(--border);margin-bottom:16px}
-    .quote blockquote{margin:0;text-align:center;white-space:pre-line;line-height:1.65}
+    .quote blockquote{margin:0;text-align:center;line-height:1.65}
     .quote .zh{font-size:22px;letter-spacing:.05em;font-family:"Noto Sans JP","Microsoft YaHei","WenQuanYi Zen Hei",system-ui,sans-serif}
     .quote .en{margin-top:8px;color:#cfd6ff;font-size:15px;font-style:italic}
 
     details > summary{cursor:pointer;list-style:none}
     details > summary::-webkit-details-marker{display:none}
 
-    /* Spotlight (focus mode) */
+    /* Focus mode */
     .focus-on{position:relative;z-index:3;transform:scale(1.02);box-shadow:0 8px 28px rgba(0,0,0,.35)}
     .focus-dim{filter:brightness(var(--dim));opacity:.9}
 
-    /* Quick Add Dock */
+    /* Calendar */
+    .cal{display:grid;grid-template-columns:repeat(7,minmax(44px,1fr));gap:6px}
+    .cal .head{font-size:12px;color:#a9b0d6;text-align:center}
+    .day{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;border:1px solid var(--border);border-radius:10px;min-height:72px;padding:6px;background:#10142e;color:var(--text);cursor:pointer}
+    .day .d{font-size:12px;color:#a9b0d6;align-self:flex-start}
+    .mark{align-self:flex-end;border-radius:999px;padding:2px 6px;font-size:11px;border:1px solid var(--border)}
+    .mark.good{background:#122a1f;color:#7bffb8;border-color:#2b6e3b}
+    .mark.bad{background:#2a121f;color:#ff9aa8;border-color:#5a2a2a}
+    .mark.none{background:#121633;color:#a9b0d6}
+    .day:focus-visible{outline:2px solid var(--accent)}
+
+    /* Dock */
     .dock{position:sticky;bottom:10px;z-index:9;display:flex;justify-content:center;margin-top:16px}
-    .dock-inner{backdrop-filter:blur(8px);background:rgba(16,20,42,.75);border:1px solid var(--border);border-radius:14px;padding:8px;display:flex;gap:8px;flex-wrap:wrap;max-width:1100px}
+    .dock-inner{backdrop-filter:blur(8px);background:rgba(16,20,42,.85);border:1px solid var(--border);border-radius:14px;padding:8px;display:flex;gap:8px;flex-wrap:wrap;max-width:1100px}
     .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:12px;border:1px solid var(--border);background:#10142a;color:#e8edff;cursor:pointer;font-size:14px}
-    .chip .k{opacity:.7;font-size:12px}
 
-    /* Modal */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5);z-index:99}
-    .modal.show{display:flex}
-    .sheet{width:min(520px,92%);background:#0f1222;border:1px solid var(--border);border-radius:14px;padding:14px}
-    .sheet h3{margin:0 0 8px}
-    .frow{display:flex;gap:10px;margin:8px 0}
-    .frow>label{flex:1 1 160px}
     input,select,textarea{width:100%;background:#0e1126;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font:inherit}
-
-    .hbar{height:10px;border-radius:8px;background:#0e1126;border:1px solid var(--border);overflow:hidden}
-    .hbar>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%}
-
     footer{color:var(--muted);font-size:12px;padding:24px;text-align:center}
   </style>
 </head>
 <body>
   <header>
     <h1>⚔️ Solo Leveling — Weekly Gate</h1>
-    <div class="sub">v3.2.0 • Quick‑Add Dock • Spotlight focus • Water micro‑buttons • Interactive buttons.</div>
+    <div class="sub">v3.2.1 • Fixed poem line breaks • Larger calendar tiles • Better contrast & focus.</div>
   </header>
 
   <div class="wrap" id="wrapRoot">
-    <!-- Motivation card -->
+    <!-- Motivation card with proper line breaks (no \n) -->
     <div class="card quote" id="qcard">
       <blockquote>
         <div class="en">"I will continue fighting myself, as long as I have fangs in my heart."</div>
-        <div class="zh" lang="ja">己の生に\n\n抗い続ける\n\n己の心に\n\n牙ある限り</div>
+        <div class="zh" lang="ja">己の生に<br>抗い続ける<br>己の心に<br>牙ある限り</div>
       </blockquote>
     </div>
 
-    <!-- Stats row -->
     <div class="grid">
       <div class="card stat" style="grid-column: span 3;">
         <div class="label">Levels Cleared (Weeks Passed)</div>
@@ -105,7 +97,6 @@
       </div>
     </div>
 
-    <!-- Weekly quests -->
     <div class="card" id="weeklyCard" data-spotlight>
       <summary><h3 style="margin:0 0 8px">Weekly Main Quests — Live Progress</h3></summary>
       <ul class="clean" id="mqList"></ul>
@@ -115,7 +106,6 @@
       </div>
     </div>
 
-    <!-- Strength -->
     <details open class="card" id="strengthCard" data-spotlight>
       <summary>💪 <b>Strength Templates & Session Tracker</b></summary>
       <div class="section">
@@ -148,7 +138,6 @@
       </div>
     </details>
 
-    <!-- Clean Boy -->
     <details open class="card" id="cleanCard" data-spotlight>
       <summary>🥗 <b>Side Quest: Clean Boy (Daily)</b></summary>
       <div class="section">
@@ -175,18 +164,16 @@
         </div>
       </div>
       <div class="section" style="padding-top:0">
-        <div class="cal-wrap">
+        <div class="row" style="align-items:center;gap:8px">
           <button class="btn secondary" id="prevMonth">◀</button>
-          <div><b id="calTitle">Month YYYY</b></div>
+          <b id="calTitle">Month YYYY</b>
           <button class="btn secondary" id="nextMonth">▶</button>
         </div>
         <div class="cal" id="calHead"></div>
         <div class="cal" id="calGrid"></div>
-        <div class="mini" style="margin-top:6px">Legend: <span class="pill">CB</span> = Clean Boy (clean & ≥ target), <span class="pill">X</span> = logged not clean, <span class="pill">—</span> = none.</div>
       </div>
     </details>
 
-    <!-- Freeform logs -->
     <details class="card" id="workoutCard" data-spotlight>
       <summary>🏋️ <b>Workout Log (freeform)</b></summary>
       <div class="section">
@@ -252,26 +239,23 @@
       </div>
     </details>
 
-    <!-- Quick Add Dock -->
     <div class="dock">
       <div class="dock-inner" id="dock">
-        <span class="chip" id="openWorkoutModal">➕ Add workout <span class="k">(W)</span></span>
+        <span class="chip" id="openWorkoutModal">➕ Add workout</span>
         <span class="chip" id="openChoreModal">➕ Add chore</span>
         <span class="chip" id="quickCardio10">🏃 +10m cardio</span>
         <span class="chip" id="quickWalk10">🚶 +10m walk</span>
-        <span class="chip" data-ml="250">💧 +250 ml <span class="k">(1)</span></span>
-        <span class="chip" data-ml="330">💧 +330 ml <span class="k">(2)</span></span>
-        <span class="chip" data-ml="500">💧 +500 ml <span class="k">(3)</span></span>
+        <span class="chip" data-ml="250">💧 +250 ml</span>
+        <span class="chip" data-ml="330">💧 +330 ml</span>
+        <span class="chip" data-ml="500">💧 +500 ml</span>
         <span class="chip" id="focusToggle">🎯 Focus mode</span>
       </div>
     </div>
 
-    <footer>
-      +1 level only if all quests met Mon–Sun. Data is stored locally; sync is optional.
-    </footer>
+    <footer>+1 level only if all quests met Mon–Sun. Data is stored locally; sync is optional.</footer>
   </div>
 
-  <!-- MODALS -->
+  <!-- Modals (unchanged API) -->
   <div class="modal" id="workoutModal" aria-hidden="true">
     <div class="sheet">
       <h3>➕ Quick add workout</h3>
@@ -291,11 +275,11 @@
     </div>
   </div>
 
-  <script src="app.js?v=320"></script>
+  <script src="app.js?v=321"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js?v=320');
+        navigator.serviceWorker.register('service-worker.js?v=321');
       });
     }
   </script>
