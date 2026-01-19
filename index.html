@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solo Leveling — Weekly Gate (v3.1.1)</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="theme-color" content="#0f1222" />
+  <style>
+    :root{ --bg:#0f1222; --panel:#171a2e; --panel2:#1f2440; --text:#e8edff; --muted:#a9b0d6; --accent:#6aa9ff; --accent2:#7bffb8; --danger:#ff6a6a; --ok:#7bffb8; --fail:#ff6a6a; }
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif}
+    header{padding:16px 20px;border-bottom:1px solid #2a2f57;background:linear-gradient(180deg,#121636,#0f1222)}
+    h1{margin:0;font-size:22px;letter-spacing:.3px;color:var(--accent)}
+    .sub{color:var(--muted);font-size:13px;margin-top:6px}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .card{background:var(--panel);border:1px solid #2a2f57;border-radius:12px;padding:14px}
+    .stat{display:flex;flex-direction:column;gap:6px}
+    .label{font-size:12px;color:var(--muted)}
+    .value{font-size:22px;font-weight:700}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row>*{flex:1 1 160px}
+    .btn{background:var(--accent);color:#041021;border:none;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#2a2f57;color:var(--text)}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid #2a2f57;color:var(--muted)}
+    ul.clean{list-style:none;padding-left:0;margin:0}
+    ul.clean li{display:flex;align-items:center;gap:8px;margin:6px 0;padding:8px;border:1px solid #2a2f57;border-radius:10px;background:#121633}
+    .dot{width:10px;height:10px;border-radius:999px;background:#555;display:inline-block}
+    .subbadges{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid #2a2f57;color:#a9b0d6}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:8px 10px;border-bottom:1px solid #2a2f57}
+    th{color:var(--muted);font-weight:600;text-align:left}
+    input,select,textarea{background:#0e1126;color:var(--text);border:1px solid #2a2f57;border-radius:8px;padding:8px 10px;font:inherit}
+    .mini{font-size:12px;color:#a9b0d6}
+    .quote{background:linear-gradient(180deg,#121636,#10142a);border:1px solid #2a2f57}
+    .quote blockquote{margin:0;text-align:center;white-space:pre-line;line-height:1.65}
+    .quote .zh{font-size:22px;letter-spacing:.05em;font-family: "Noto Sans JP", "Microsoft YaHei", "WenQuanYi Zen Hei", system-ui, sans-serif}
+    .quote .en{margin-top:8px;color:#cfd6ff;font-size:15px;font-style:italic}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚔️ Solo Leveling — Weekly Gate</h1>
+    <div class="sub">v3.1.1 • Motivation card added.</div>
+  </header>
+
+  <div class="wrap">
+    <!-- Motivational quote (only the saying, no attribution) -->
+    <div class="card quote">
+      <blockquote>
+        <div class="en">"I will continue fighting myself, as long as I have fangs in my heart."</div>
+        <div class="zh" lang="ja">己の生に\n\n抗い続ける\n\n己の心に\n\n牙ある限り</div>
+      </blockquote>
+    </div>
+
+    <div class="grid">
+      <div class="card stat" style="grid-column: span 3;">
+        <div class="label">Levels Cleared (Weeks Passed)</div>
+        <div class="value" id="levelsCleared">0</div>
+      </div>
+      <div class="card stat" style="grid-column: span 3;">
+        <div class="label">This Week Gate</div>
+        <div class="value" id="gateStatus">Checking…</div>
+      </div>
+      <div class="card stat" style="grid-column: span 3;">
+        <div class="label">Total EXP (optional)</div>
+        <div class="value" id="totalExp">0</div>
+      </div>
+      <div class="card stat" style="grid-column: span 3;">
+        <div class="label">This Week EXP</div>
+        <div class="value" id="weekExp">0</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3 style="margin:0 0 8px">Weekly Main Quests — Live Progress</h3>
+      <ul class="clean" id="mqList"></ul>
+      <div class="row" style="margin-top:8px">
+        <span class="pill">Week: <span id="weekRange"></span></span>
+        <button class="btn secondary" id="keywordsBtn" style="margin-left:auto">Edit keywords</button>
+      </div>
+    </div>
+
+    <!-- The rest of app content is loaded from app.js (same as v3.1 feature set) -->
+    <div id="appMount"></div>
+
+    <footer style="margin-top:16px">
+      +1 level only if all quests met Mon–Sun. Data is stored locally; sync is optional.
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
+</body>
+</html>
